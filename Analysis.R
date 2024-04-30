@@ -223,6 +223,7 @@ siteSSTlm=lm(SST~YYYY*Site,data=CoralTempPR)
 summary(siteSSTlm)
 siteSSTlm_site_slope = emtrends(siteSSTlm,pairwise~Site,var="YYYY",adjust="tukey")
 
+####Appendix1####
 Appendix1=
   as.data.frame(merge(x=as.data.frame(siteSSTlm_site_slope$emtrends),y=unique(CoralTempPR[,c(14,15)]),by="Site",all.x=TRUE)) %>% 
   mutate(Region = fct_relevel(Region, "Northern", "Southern", "Eastern", "Western")) %>%
@@ -231,7 +232,7 @@ Appendix1=
   geom_hline(yintercept=0.01,colour="red",linetype="dashed",size=2)+
   geom_linerange(aes(x = Site, ymin = lower.CL, ymax = upper.CL, color=Region), linewidth = 3) + 
   geom_point(aes(x = Site, y = YYYY.trend, fill=Region), size=6, color="black", shape=22) + 
-  facet_wrap(.~Region,ncol=4, scales = "free")+
+  facet_wrap(.~Region,ncol=4, scales = "free_x")+
   scale_fill_brewer(palette = "RdYlBu")+
   scale_colour_brewer(palette = "RdYlBu")+
   scale_y_continuous(limits = c(0,0.025),name = "Rate of Warming (°C/year)",sec.axis = sec_axis( trans=~.*10, name="Rate of Warming (°C/decade)")) +
@@ -251,7 +252,8 @@ Appendix1=
         panel.background = element_blank(),
         panel.spacing = unit(0, "lines"))
 
-ggsave('Appendix1.tiff', Appendix1, width = 12, height = 4, dpi = 300)
+ggsave('Appendix1.2.tiff', Appendix1, width = 12, height = 4, dpi = 300)
+Appendix1
 
 ######Which years experienced ecologically significant and ecologically severe heat stress?#####
 Figure3=CoralTempPR %>% 
